@@ -59,7 +59,7 @@
     <ClCompile Include="CMyShape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\과제_4~5\Circle.cpp">
+    <ClCompile Include="Circle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,6 +72,7 @@
     <None Include="res\DrawShapes.rc2">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Draw_Shapes.ico">

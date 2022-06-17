@@ -1,12 +1,10 @@
 #pragma once
 #include "CMyShape.h"
-
-class Circle : public CMyShape
-{
-
+class Circle : public CMyShape{
 public:
 	Circle();
 	float radius;
-	void draw(CPaintDC* pdc);
+	void draw(CDC* pdc);
+	
 };
 

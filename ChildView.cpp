@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -52,14 +53,31 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 void CChildView::OnPaint() 
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
-	
+
+	CRect rect;
+	GetClientRect(rect);
+	int w = rect.Width();
+	int h = rect.Height();
+
+	CDC OffScrDC;
+	OffScrDC.CreateCompatibleDC(&dc);
+	CBitmap OffScrBmp;
+	OffScrBmp.CreateCompatibleBitmap(&dc, w, h);
+	OffScrDC.SelectObject(OffScrBmp);
+	OffScrDC.Rectangle(0, 0, w, h);
+
+
+
 	CString str;
 	str.Format(_T("현재 도형의 수 : %d"), shapes.size());
-	dc.TextOutW(0, 0, str);
+	OffScrDC.TextOutW(0, 0, str);
 
 	for (int i = 0; i < shapes.size(); i++) {
-		shapes[i]->draw(&dc);
+		shapes[i]->draw(&OffScrDC);
 	}
+
+
+	dc.BitBlt(0, 0, w, h, &OffScrDC, 0, 0, SRCCOPY);
 
 }
 
@@ -102,4 +120,11 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		Invalidate();
 	}
 	CWnd::OnMouseMove(nFlags, point);
+}
+
+
+BOOL CChildView::OnEraseBkgnd(CDC* pDC)
+{
+		
+	return true;
 }

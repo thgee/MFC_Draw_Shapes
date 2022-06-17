@@ -8,6 +8,6 @@ public:
 	CPoint c_pt;
 	CPoint m_pt;
 	COLORREF color;
-	void virtual draw(CPaintDC* pdc);
+	void virtual draw(CDC* pdc);
 };
 

@@ -194,8 +194,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\과제_4~5\Circle.cpp" />
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CMyShape.cpp" />
     <ClCompile Include="Draw_Shapes.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -210,6 +210,7 @@
     <ResourceCompile Include="DrawShapes.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="res\DrawShapes.rc2" />
   </ItemGroup>
   <ItemGroup>
