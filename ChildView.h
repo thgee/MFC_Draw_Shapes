@@ -17,6 +17,13 @@ class CChildView : public CWnd
 public:
 	CChildView();
 	// --------------------------------------------------
+	bool onRect;
+	bool onCircle;
+	bool onStar;
+	bool onCurve;
+	bool onSelect;
+	
+
 
 	std::vector <CMyShape*> shapes;
 
@@ -48,5 +55,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	afx_msg void OnDrawCircle();
 };
 

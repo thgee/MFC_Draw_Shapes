@@ -16,7 +16,8 @@
 
 // CChildView
 
-CChildView::CChildView()
+CChildView::CChildView() : onRect(true), onCircle(false), onCurve(false),
+						   onStar(false), onSelect(false)
 {
 }
 
@@ -31,6 +32,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_ERASEBKGND()
+	ON_WM_CONTEXTMENU()
+	ON_COMMAND(ID_DRAW_CIRCLE, &CChildView::OnDrawCircle)
 END_MESSAGE_MAP()
 
 
@@ -54,10 +57,11 @@ void CChildView::OnPaint()
 {
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
 
-	CRect rect;
-	GetClientRect(rect);
-	int w = rect.Width();
-	int h = rect.Height();
+	// ---------------------- Double Buffering------------------------
+	CRect buffer_rect;
+	GetClientRect(buffer_rect);
+	int w = buffer_rect.Width();
+	int h = buffer_rect.Height();
 
 	CDC OffScrDC;
 	OffScrDC.CreateCompatibleDC(&dc);
@@ -67,18 +71,23 @@ void CChildView::OnPaint()
 	OffScrDC.Rectangle(0, 0, w, h);
 
 
+	// ------------------------------- My Paint----------------------------------------
+	CString str1;
+	CString str2;
+	str1.Format(_T("Number of Shapes : %d"), shapes.size());
+	str2.Format(_T("Number of Selected : %d"), shapes.size());
+	OffScrDC.TextOutW(5, 5, str1);
+	OffScrDC.TextOutW(5, 25, str2);
 
-	CString str;
-	str.Format(_T("현재 도형의 수 : %d"), shapes.size());
-	OffScrDC.TextOutW(0, 0, str);
 
 	for (int i = 0; i < shapes.size(); i++) {
 		shapes[i]->draw(&OffScrDC);
 	}
 
 
-	dc.BitBlt(0, 0, w, h, &OffScrDC, 0, 0, SRCCOPY);
+	//---------------------------------------------------------------------------------
 
+	dc.BitBlt(0, 0, w, h, &OffScrDC, 0, 0, SRCCOPY);
 }
 
 int dragging = 0;
@@ -86,14 +95,20 @@ int dragging = 0;
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	dragging = 1;
-	Circle* C = new Circle;
-	C->c_pt = point;
-	C->m_pt = point;
+	
+	if (onCircle) {
+		Circle* C = new Circle;
+		C->c_pt = point;
+		C->m_pt = point;
+		
+		shapes.push_back(C);
+	}
+
+
+	// Random Color Part
 	int ran[3];
 	for (int i = 0; i < 3; i++) ran[i] = rand() % 256;
-	C->color = RGB(ran[0], ran[1], ran[2]); // 랜덤하게 색이 변화함
-	shapes.push_back(C);
-	
+	shapes[shapes.size() - 1]->color = RGB(ran[0], ran[1], ran[2]);
 
 	SetCapture();
 	Invalidate();
@@ -113,18 +128,37 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (dragging == 1) {
+	if (onCircle && dragging == 1) { // onCircle모드에서 드래그중일 때
 		Circle* C = (Circle*)shapes[shapes.size() - 1];
 		C->m_pt = point;
 
 		Invalidate();
 	}
+
 	CWnd::OnMouseMove(nFlags, point);
 }
 
 
-BOOL CChildView::OnEraseBkgnd(CDC* pDC)
-{
-		
+
+// Double Buffering
+BOOL CChildView::OnEraseBkgnd(CDC* pDC){
 	return true;
+}
+
+
+
+// 우클릭 시 메뉴 팝업
+void CChildView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	CMenu menu;
+	menu.LoadMenuW(IDR_MAINFRAME);
+	CMenu* pMenu = menu.GetSubMenu(3); // 메뉴중에 3인덱스에 있는 메뉴를 가져옴
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd());
+}
+
+
+void CChildView::OnDrawCircle()
+{
+	onCircle = TRUE;
+
 }
