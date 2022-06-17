@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_ERASEBKGND()
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_DRAW_CIRCLE, &CChildView::OnDrawCircle)
+	ON_COMMAND(ID_DRAW_RECTANGLE, &CChildView::OnDrawRectangle)
 END_MESSAGE_MAP()
 
 
@@ -80,6 +81,7 @@ void CChildView::OnPaint()
 	OffScrDC.TextOutW(5, 25, str2);
 
 
+
 	for (int i = 0; i < shapes.size(); i++) {
 		shapes[i]->draw(&OffScrDC);
 	}
@@ -96,6 +98,14 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	dragging = 1;
 	
+	if (onRect) {
+		Rect* R = new Rect;
+		R->c_pt = point;
+		R->m_pt = point;
+
+		shapes.push_back(R);
+	}
+
 	if (onCircle) {
 		Circle* C = new Circle;
 		C->c_pt = point;
@@ -105,9 +115,11 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 
 
+
+
 	// Random Color Part
 	int ran[3];
-	for (int i = 0; i < 3; i++) ran[i] = rand() % 256;
+	for (int i = 0; i < 3; i++) ran[i] = rand() % 256; // 1 ~ 255 중에 랜덤으로 추출하여 RGB값으로 넣어줌
 	shapes[shapes.size() - 1]->color = RGB(ran[0], ran[1], ran[2]);
 
 	SetCapture();
@@ -128,13 +140,17 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (onCircle && dragging == 1) { // onCircle모드에서 드래그중일 때
-		Circle* C = (Circle*)shapes[shapes.size() - 1];
-		C->m_pt = point;
-
-		Invalidate();
+	if (onRect && dragging == 1) { // 사각형 Draw모드
+		Rect* R = (Rect*)shapes[shapes.size() - 1];
+		R->m_pt = point;
 	}
 
+	if (onCircle && dragging == 1) { // 원 Draw모드
+		Circle* C = (Circle*)shapes[shapes.size() - 1];
+		C->m_pt = point;
+	}
+
+	Invalidate();
 	CWnd::OnMouseMove(nFlags, point);
 }
 
@@ -152,13 +168,20 @@ void CChildView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	CMenu menu;
 	menu.LoadMenuW(IDR_MAINFRAME);
-	CMenu* pMenu = menu.GetSubMenu(3); // 메뉴중에 3인덱스에 있는 메뉴를 가져옴
+	CMenu* pMenu = menu.GetSubMenu(3); // 메뉴중에 3 인덱스에 있는 메뉴를 가져옴
 	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd());
 }
 
 
 void CChildView::OnDrawCircle()
 {
-	onCircle = TRUE;
+	onCircle = true;
+	onRect = false;
+}
 
+
+void CChildView::OnDrawRectangle()
+{
+	onRect = true;
+	onCircle = false;
 }

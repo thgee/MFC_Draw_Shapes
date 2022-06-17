@@ -57,5 +57,6 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	afx_msg void OnDrawCircle();
+	afx_msg void OnDrawRectangle();
 };
 
