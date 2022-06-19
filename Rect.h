@@ -8,5 +8,8 @@ public:
 	float height;
 
 	void draw(CDC* pdc);
+
+	void drawRect(CDC* pdc);
+	bool inPos(CPoint pt);
 };
 

@@ -1,6 +1,2 @@
-﻿  Rect.cpp
-C:\Users\이태혁\source\repos\Draw_Shapes\Rect.cpp(9,17): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\이태혁\source\repos\Draw_Shapes\Rect.cpp(10,18): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\이태혁\source\repos\Draw_Shapes\Rect.cpp(11,56): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\이태혁\source\repos\Draw_Shapes\Rect.cpp(11,40): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  LINK : C:\Users\이태혁\source\repos\Draw_Shapes\x64\Debug\Draw_Shapes.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   Draw_Shapes.vcxproj -> C:\Users\이태혁\source\repos\Draw_Shapes\x64\Debug\Draw_Shapes.exe

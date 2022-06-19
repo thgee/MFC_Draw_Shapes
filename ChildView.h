@@ -6,6 +6,9 @@
 #pragma once
 #include "CMyShape.h"
 #include "Circle.h"
+#include "Line.h"
+#include "Star.h"
+
 #include <vector>
 
 
@@ -22,13 +25,15 @@ public:
 	bool onStar;
 	bool onCurve;
 	bool onSelect;
-	
+	CPoint pre_pt; // 이동하기 전의 좌표를 저장하는 변수
+
 
 
 	std::vector <CMyShape*> shapes;
-
-
-
+	
+	float DegToRad(float deg);
+	void SetColor();
+	int getSelectNum();
 
 	// 
 // 특성입니다.
@@ -58,5 +63,8 @@ public:
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	afx_msg void OnDrawCircle();
 	afx_msg void OnDrawRectangle();
+	afx_msg void OnDrawCurve();
+	afx_msg void OnDrawStar();
+	afx_msg void OnActionSelect();
 };
 

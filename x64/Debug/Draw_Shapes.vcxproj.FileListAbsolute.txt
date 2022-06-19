@@ -1,1 +1,2 @@
 C:\Users\이태혁\source\repos\Draw_Shapes\x64\Debug\Draw_Shapes.exe
+C:\Users\xogur\OneDrive\바탕 화면\MFC_Draw_Shapes\x64\Debug\Draw_Shapes.exe
